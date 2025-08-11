@@ -1,9 +1,9 @@
-
-
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
+import pandas as pd
+from flask import send_file
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # schimbă cu ceva mai sigur în producție
@@ -154,12 +154,28 @@ def index():
     c = conn.cursor()
     if username == 'Admin':
         c.execute('SELECT * FROM parcurs')
+        export_btn = True
     else:
         c.execute('SELECT * FROM parcurs WHERE username=?', (username,))
+        export_btn = False
     rows = c.fetchall()
     conn.close()
     today = datetime.date.today().isoformat()
-    return render_template('index.html', rows=rows, username=username, today=today)
+    return render_template('index.html', rows=rows, username=username, today=today, export_btn=export_btn)
+
+# Export Excel pentru admin
+@app.route('/export')
+def export():
+    if 'username' not in session or session['username'] != 'Admin':
+        return redirect(url_for('index'))
+    conn = sqlite3.connect(DB_NAME)
+    df = pd.read_sql_query('SELECT * FROM parcurs', conn)
+    conn.close()
+    # Reordonez coloanele pentru export
+    df = df[['username', 'zona', 'scop', 'km', 'data']]
+    file_path = 'foaie_parcurs.xlsx'
+    df.to_excel(file_path, index=False)
+    return send_file(file_path, as_attachment=True)
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
