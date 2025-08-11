@@ -74,7 +74,29 @@
             color: #2563eb;
         }
         @media (max-width: 600px) {
-            .container { padding: 12px 4px; }
+            .container {
+                max-width: 100vw;
+                padding: 8px 2vw;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            h1 {
+                font-size: 1.3em;
+            }
+            form {
+                gap: 10px;
+            }
+            label {
+                font-size: 14px;
+            }
+            input[type="text"], input[type="number"], select, input[type="date"] {
+                font-size: 14px;
+                padding: 8px 8px;
+            }
+            button[type="submit"] {
+                font-size: 15px;
+                padding: 8px 10px;
+            }
         }
     </style>
 </head>
@@ -113,16 +135,13 @@
             <button type="submit">Salvează</button>
         </form>
         <script>
-        const clientiPeZona = {
-            'Zona 2': ['Client Z2-1', 'Client Z2-2', 'Client Z2-3'],
-            'Zona 3': ['Client Z3-1', 'Client Z3-2'],
-            'Zona 4': ['Client Z4-1', 'Client Z4-2', 'Client Z4-3', 'Client Z4-4'],
-            'Zona 5': ['Client Z5-1'],
-            'Zona 6': ['Client Z6-1', 'Client Z6-2'],
-            'Zona 7': ['Client Z7-1', 'Client Z7-2', 'Client Z7-3'],
-            'Zona 8': ['Client Z8-1'],
-            'Zona 9': ['Client Z9-1', 'Client Z9-2'],
-        };
+        let clientiPeZona = {};
+        fetch('/static/clienti_zona.json')
+            .then(response => response.json())
+            .then(data => {
+                clientiPeZona = data;
+                updateScopuri();
+            });
         const scopuriGenerale = [
             'Proiecte',
             'Potentiali clienti noi',
