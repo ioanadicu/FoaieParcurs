@@ -184,21 +184,41 @@ def edit(id):
     username = session['username']
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
-    if request.method == 'POST':
-        zona = request.form['zona']
-        scop = request.form.get('scop', '')
-        data = request.form.get('data')
-        km = request.form['km']
-        c.execute('UPDATE parcurs SET zona=?, scop=?, data=?, km=? WHERE id=? AND username=?', (zona, scop, data, km, id, username))
-        conn.commit()
+    if username == 'Admin':
+        # Admin poate edita orice
+        if request.method == 'POST':
+            zona = request.form['zona']
+            scop = request.form.get('scop', '')
+            data = request.form.get('data')
+            km = request.form['km']
+            new_username = request.form.get('username')
+            c.execute('UPDATE parcurs SET username=?, zona=?, scop=?, data=?, km=? WHERE id=?', (new_username, zona, scop, data, km, id))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('index'))
+        c.execute('SELECT * FROM parcurs WHERE id=?', (id,))
+        row = c.fetchone()
         conn.close()
-        return redirect(url_for('index'))
-    c.execute('SELECT * FROM parcurs WHERE id=? AND username=?', (id, username))
-    row = c.fetchone()
-    conn.close()
-    if not row:
-        return "Nu ai acces la această înregistrare!", 403
-    return render_template('edit.html', row=row)
+        if not row:
+            return "Nu există această înregistrare!", 404
+        return render_template('edit.html', row=row, is_admin=True)
+    else:
+        # Utilizatorul poate edita doar propriile înregistrări
+        if request.method == 'POST':
+            zona = request.form['zona']
+            scop = request.form.get('scop', '')
+            data = request.form.get('data')
+            km = request.form['km']
+            c.execute('UPDATE parcurs SET zona=?, scop=?, data=?, km=? WHERE id=? AND username=?', (zona, scop, data, km, id, username))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('index'))
+        c.execute('SELECT * FROM parcurs WHERE id=? AND username=?', (id, username))
+        row = c.fetchone()
+        conn.close()
+        if not row:
+            return "Nu ai acces la această înregistrare!", 403
+        return render_template('edit.html', row=row, is_admin=False)
 
 if __name__ == '__main__':
     app.run(debug=True)

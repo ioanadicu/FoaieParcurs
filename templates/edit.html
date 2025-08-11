@@ -82,6 +82,11 @@
     <div class="container">
         <h1>Editează Parcurs</h1>
         <form method="post">
+            {% if is_admin %}
+            <label>Nume utilizator:
+                <input type="text" name="username" value="{{ row[1] }}" required>
+            </label>
+            {% endif %}
             <label>Zona:
                 <select name="zona" id="zona-select" required>
                     <option value="Zona 2" {% if row[2] == 'Zona 2' %}selected{% endif %}>Zona 2</option>
