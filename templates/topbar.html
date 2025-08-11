@@ -1,0 +1,55 @@
+<style>
+body {
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+.topbar {
+    width: 100vw;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(60,72,88,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 8px 8px 8px 8px;
+    gap: 6px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    min-height: 54px;
+}
+.topbar * {
+    box-sizing: border-box;
+}
+@media (max-width: 600px) {
+    .topbar {
+        width: 100vw;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+</style>
+<div class="topbar" style="display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; min-width: 40px;">
+        <a href="/" title="Acasă" style="display: flex; align-items: center; text-decoration: none; gap: 8px;">
+            <img src="/static/images/bro_logo.jpg" alt="Baumit Logo" style="height:32px;border-radius:6px;box-shadow:0 1px 4px rgba(60,72,88,0.10);">
+            <span style="font-weight: 600; color: #6366f1; font-size: 20px;">Foaie Parcurs</span>
+        </a>
+    </div>
+    <div style="display: flex; align-items: center; gap: 18px; min-width: 120px; justify-content: flex-end; margin-right:18px;">
+        {% if username %}
+        <span style="color:#6366f1;font-weight:500;font-size:16px;">{{ username }}</span>
+        {% endif %}
+        <a href="#" title="Tutorial" style="color:#6366f1;font-size:22px;text-decoration:none;">
+            <span style="font-size:22px;font-weight:bold;">?</span>
+        </a>
+        <a href="#" title="Ajutor" style="color:#6366f1;font-size:18px;text-decoration:none;font-weight:500;">
+            Ajutor
+        </a>
+        {% if username %}
+        <a href="/logout" title="Logout" style="color:#ef4444;font-size:18px;font-weight:500;text-decoration:none;">Logout</a>
+        {% endif %}
+    </div>
+</div>

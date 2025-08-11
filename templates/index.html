@@ -192,12 +192,9 @@
     </style>
 </head>
 <body>
+    {% include 'topbar.html' %}
     <div class="container">
-        <h1>Foaie Parcurs</h1>
-        <div class="userbar">
-            <span>Bun venit, <strong>{{ username }}</strong>!</span>
-            <a href="/logout">Logout</a>
-        </div>
+        <h1 style="margin-top:0;">Foaie Parcurs</h1>
         {% if export_btn %}
         <form method="get" action="/export" style="margin-bottom: 16px;">
             <button type="submit" style="background:linear-gradient(90deg,#6366f1 0%,#60a5fa 100%);color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:16px;font-weight:500;cursor:pointer;box-shadow:0 2px 8px rgba(99,102,241,0.08);transition:background 0.2s;margin-bottom:8px;">Generare Excel</button>
