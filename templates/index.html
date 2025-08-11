@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Foaie Parcurs</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #f0f0f0; }
+        form { margin-bottom: 20px; }
+        .edit-btn { background: #007bff; color: #fff; border: none; padding: 5px 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Foaie Parcurs</h1>
+    <p>Bun venit, <strong>{{ username }}</strong>! <a href="/logout">Logout</a></p>
+    <form method="post">
+        <label>Zona: <input type="text" name="zona" required></label>
+        <label>Km: <input type="number" name="km" required></label>
+        <button type="submit">Adaugă</button>
+    </form>
+    <table>
+        <tr>
+            <th>Zona</th>
+            <th>Kilometri</th>
+            <th>Acțiuni</th>
+        </tr>
+        {% for row in rows %}
+        <tr>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td><a href="/edit/{{ row[0] }}"><button class="edit-btn">Editează</button></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

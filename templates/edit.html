@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Editează Parcurs</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        form { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 10px; }
+        button { background: #007bff; color: #fff; border: none; padding: 8px 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Editează Parcurs</h1>
+    <form method="post">
+        <label>Zona: <input type="text" name="zona" value="{{ row[2] }}" required></label>
+        <label>Km: <input type="number" name="km" value="{{ row[3] }}" required></label>
+        <button type="submit">Salvează</button>
+    </form>
+    <a href="/">&larr; Înapoi</a>
+</body>
+</html>

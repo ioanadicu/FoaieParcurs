@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Foaie Parcurs</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        form { margin-top: 40px; }
+        label { display: block; margin-bottom: 10px; }
+        button { background: #007bff; color: #fff; border: none; padding: 8px 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+        <h1>Login</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="msg">{{ messages[0] }}</div>
+            {% endif %}
+        {% endwith %}
+        <form method="post">
+                <label>Username: <input type="text" name="username" required></label>
+                <label>Parolă: <input type="password" name="password" required></label>
+                <button type="submit">Intră</button>
+        </form>
+        <p>Nu ai cont? <a href="/register">Înregistrare</a></p>
+</body>
+</html>
