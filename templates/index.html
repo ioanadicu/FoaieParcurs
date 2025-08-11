@@ -4,35 +4,174 @@
     <meta charset="UTF-8">
     <title>Foaie Parcurs</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background: #f0f0f0; }
-        form { margin-bottom: 20px; }
-        .edit-btn { background: #007bff; color: #fff; border: none; padding: 5px 10px; cursor: pointer; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(120deg, #f8fafc 0%, #e0e7ff 100%);
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(60,72,88,0.12);
+            padding: 32px 28px 24px 28px;
+        }
+        h1 {
+            text-align: center;
+            color: #3b3b3b;
+            margin-bottom: 18px;
+        }
+        .userbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .userbar strong {
+            color: #6366f1;
+        }
+        .userbar a {
+            color: #ef4444;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .userbar a:hover {
+            color: #b91c1c;
+        }
+        form {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        label {
+            display: flex;
+            flex-direction: column;
+            font-size: 15px;
+            color: #374151;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 4px;
+            background: #f1f5f9;
+            transition: border 0.2s;
+        }
+        input[type="text"]:focus, input[type="number"]:focus {
+            border: 1.5px solid #6366f1;
+            outline: none;
+        }
+        button[type="submit"] {
+            background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 22px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+            transition: background 0.2s;
+        }
+        button[type="submit"]:hover {
+            background: linear-gradient(90deg, #4338ca 0%, #2563eb 100%);
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+            background: #f9fafb;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(60,72,88,0.07);
+        }
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+        }
+        th {
+            background: #6366f1;
+            color: #fff;
+            font-weight: 600;
+            border: none;
+        }
+        tr {
+            transition: background 0.2s;
+        }
+        tr:hover {
+            background: #e0e7ff;
+        }
+        td {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .edit-btn {
+            background: linear-gradient(90deg, #60a5fa 0%, #6366f1 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 1px 4px rgba(99,102,241,0.08);
+            transition: background 0.2s;
+        }
+        .edit-btn:hover {
+            background: linear-gradient(90deg, #2563eb 0%, #6366f1 100%);
+        }
+        @media (max-width: 600px) {
+            .container { padding: 12px 4px; }
+            form { flex-direction: column; gap: 8px; }
+            th, td { padding: 8px 4px; }
+        }
     </style>
 </head>
 <body>
-    <h1>Foaie Parcurs</h1>
-    <p>Bun venit, <strong>{{ username }}</strong>! <a href="/logout">Logout</a></p>
-    <form method="post">
-        <label>Zona: <input type="text" name="zona" required></label>
-        <label>Km: <input type="number" name="km" required></label>
-        <button type="submit">Adaugă</button>
-    </form>
-    <table>
-        <tr>
-            <th>Zona</th>
-            <th>Kilometri</th>
-            <th>Acțiuni</th>
-        </tr>
-        {% for row in rows %}
-        <tr>
-            <td>{{ row[2] }}</td>
-            <td>{{ row[3] }}</td>
-            <td><a href="/edit/{{ row[0] }}"><button class="edit-btn">Editează</button></a></td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="container">
+        <h1>Foaie Parcurs</h1>
+        <div class="userbar">
+            <span>Bun venit, <strong>{{ username }}</strong>!</span>
+            <a href="/logout">Logout</a>
+        </div>
+        <form method="post">
+            <label>Zona:
+                <select name="zona" required>
+                    <option value="">Selectează zona</option>
+                    <option value="Zona 2">Zona 2</option>
+                    <option value="Zona 3">Zona 3</option>
+                    <option value="Zona 4">Zona 4</option>
+                    <option value="Zona 5">Zona 5</option>
+                    <option value="Zona 6">Zona 6</option>
+                    <option value="Zona 7">Zona 7</option>
+                    <option value="Zona 8">Zona 8</option>
+                    <option value="Zona 9">Zona 9</option>
+                </select>
+            </label>
+            <label>Km:
+                <input type="number" name="km" required>
+            </label>
+            <button type="submit">Adaugă</button>
+        </form>
+        <table>
+            <tr>
+                <th>Zona</th>
+                <th>Kilometri</th>
+                <th>Acțiuni</th>
+            </tr>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td><a href="/edit/{{ row[0] }}"><button class="edit-btn">Editează</button></a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>
 </html>

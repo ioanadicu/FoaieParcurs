@@ -4,19 +4,102 @@
     <meta charset="UTF-8">
     <title>Editează Parcurs</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        form { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 10px; }
-        button { background: #007bff; color: #fff; border: none; padding: 8px 16px; cursor: pointer; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(120deg, #f8fafc 0%, #e0e7ff 100%);
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 400px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(60,72,88,0.12);
+            padding: 32px 28px 24px 28px;
+        }
+        h1 {
+            text-align: center;
+            color: #3b3b3b;
+            margin-bottom: 18px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        label {
+            font-size: 15px;
+            color: #374151;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 4px;
+            background: #f1f5f9;
+            transition: border 0.2s;
+        }
+        input[type="text"]:focus, input[type="number"]:focus {
+            border: 1.5px solid #6366f1;
+            outline: none;
+        }
+        button[type="submit"] {
+            background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 22px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+            transition: background 0.2s;
+        }
+        button[type="submit"]:hover {
+            background: linear-gradient(90deg, #4338ca 0%, #2563eb 100%);
+        }
+        a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #2563eb;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 12px 4px; }
+        }
     </style>
 </head>
 <body>
-    <h1>Editează Parcurs</h1>
-    <form method="post">
-        <label>Zona: <input type="text" name="zona" value="{{ row[2] }}" required></label>
-        <label>Km: <input type="number" name="km" value="{{ row[3] }}" required></label>
-        <button type="submit">Salvează</button>
-    </form>
-    <a href="/">&larr; Înapoi</a>
+    <div class="container">
+        <h1>Editează Parcurs</h1>
+        <form method="post">
+            <label>Zona:
+                <select name="zona" required>
+                    <option value="Zona 2" {% if row[2] == 'Zona 2' %}selected{% endif %}>Zona 2</option>
+                    <option value="Zona 3" {% if row[2] == 'Zona 3' %}selected{% endif %}>Zona 3</option>
+                    <option value="Zona 4" {% if row[2] == 'Zona 4' %}selected{% endif %}>Zona 4</option>
+                    <option value="Zona 5" {% if row[2] == 'Zona 5' %}selected{% endif %}>Zona 5</option>
+                    <option value="Zona 6" {% if row[2] == 'Zona 6' %}selected{% endif %}>Zona 6</option>
+                    <option value="Zona 7" {% if row[2] == 'Zona 7' %}selected{% endif %}>Zona 7</option>
+                    <option value="Zona 8" {% if row[2] == 'Zona 8' %}selected{% endif %}>Zona 8</option>
+                    <option value="Zona 9" {% if row[2] == 'Zona 9' %}selected{% endif %}>Zona 9</option>
+                </select>
+            </label>
+            <label>Km:
+                <input type="number" name="km" value="{{ row[3] }}" required>
+            </label>
+            <button type="submit">Salvează</button>
+        </form>
+        <a href="/">&larr; Înapoi</a>
+    </div>
 </body>
 </html>

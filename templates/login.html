@@ -4,13 +4,87 @@
     <meta charset="UTF-8">
     <title>Login Foaie Parcurs</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        form { margin-top: 40px; }
-        label { display: block; margin-bottom: 10px; }
-        button { background: #007bff; color: #fff; border: none; padding: 8px 16px; cursor: pointer; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(120deg, #f8fafc 0%, #e0e7ff 100%);
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 400px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(60,72,88,0.12);
+            padding: 32px 28px 24px 28px;
+        }
+        h1 {
+            text-align: center;
+            color: #3b3b3b;
+            margin-bottom: 18px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        label {
+            font-size: 15px;
+            color: #374151;
+        }
+        input[type="text"], input[type="password"] {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 4px;
+            background: #f1f5f9;
+            transition: border 0.2s;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border: 1.5px solid #6366f1;
+            outline: none;
+        }
+        button[type="submit"] {
+            background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 22px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+            transition: background 0.2s;
+        }
+        button[type="submit"]:hover {
+            background: linear-gradient(90deg, #4338ca 0%, #2563eb 100%);
+        }
+        .msg {
+            color: #ef4444;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #2563eb;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 12px 4px; }
+        }
     </style>
 </head>
 <body>
+    <div class="container">
         <h1>Login</h1>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -18,10 +92,15 @@
             {% endif %}
         {% endwith %}
         <form method="post">
-                <label>Username: <input type="text" name="username" required></label>
-                <label>Parolă: <input type="password" name="password" required></label>
-                <button type="submit">Intră</button>
+            <label>Username:
+                <input type="text" name="username" required>
+            </label>
+            <label>Parolă:
+                <input type="password" name="password" required>
+            </label>
+            <button type="submit">Intră</button>
         </form>
-        <p>Nu ai cont? <a href="/register">Înregistrare</a></p>
+        <a href="/register">Nu ai cont? Înregistrare</a>
+    </div>
 </body>
 </html>
