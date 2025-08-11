@@ -19,7 +19,9 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL,
             zona TEXT NOT NULL,
-            km INTEGER NOT NULL
+            scop TEXT,
+            km INTEGER NOT NULL,
+            data TEXT NOT NULL
         )''')
         c.execute('''CREATE TABLE users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,9 +31,18 @@ def init_db():
         conn.commit()
         conn.close()
         created = True
-    # Creează contul Admin dacă nu există
+    # Migrare: adaugă coloana data dacă nu există
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
+    c.execute("PRAGMA table_info(parcurs)")
+    columns = [col[1] for col in c.fetchall()]
+    if 'data' not in columns:
+        c.execute('ALTER TABLE parcurs ADD COLUMN data TEXT NOT NULL DEFAULT ""')
+        conn.commit()
+    if 'scop' not in columns:
+        c.execute('ALTER TABLE parcurs ADD COLUMN scop TEXT')
+        conn.commit()
+    # Creează contul Admin dacă nu există
     c.execute('SELECT * FROM users WHERE username=?', ('Admin',))
     if not c.fetchone():
         from werkzeug.security import generate_password_hash
@@ -124,15 +135,18 @@ def logout():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    import datetime
     if 'username' not in session:
         return redirect(url_for('login'))
     username = session['username']
     if request.method == 'POST':
         zona = request.form['zona']
+        scop = request.form.get('scop', '')
         km = request.form['km']
+        data = request.form.get('data') or datetime.date.today().isoformat()
         conn = sqlite3.connect(DB_NAME)
         c = conn.cursor()
-        c.execute('INSERT INTO parcurs (username, zona, km) VALUES (?, ?, ?)', (username, zona, km))
+        c.execute('INSERT INTO parcurs (username, zona, scop, km, data) VALUES (?, ?, ?, ?, ?)', (username, zona, scop, km, data))
         conn.commit()
         conn.close()
         return redirect(url_for('index'))
@@ -144,7 +158,8 @@ def index():
         c.execute('SELECT * FROM parcurs WHERE username=?', (username,))
     rows = c.fetchall()
     conn.close()
-    return render_template('index.html', rows=rows, username=username)
+    today = datetime.date.today().isoformat()
+    return render_template('index.html', rows=rows, username=username, today=today)
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
@@ -155,8 +170,10 @@ def edit(id):
     c = conn.cursor()
     if request.method == 'POST':
         zona = request.form['zona']
+        scop = request.form.get('scop', '')
+        data = request.form.get('data')
         km = request.form['km']
-        c.execute('UPDATE parcurs SET zona=?, km=? WHERE id=? AND username=?', (zona, km, id, username))
+        c.execute('UPDATE parcurs SET zona=?, scop=?, data=?, km=? WHERE id=? AND username=?', (zona, scop, data, km, id, username))
         conn.commit()
         conn.close()
         return redirect(url_for('index'))

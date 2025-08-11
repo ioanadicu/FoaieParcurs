@@ -54,7 +54,7 @@
             font-size: 15px;
             color: #374151;
         }
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="number"], select {
             padding: 8px 12px;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
@@ -63,7 +63,7 @@
             background: #f1f5f9;
             transition: border 0.2s;
         }
-        input[type="text"]:focus, input[type="number"]:focus {
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
             border: 1.5px solid #6366f1;
             outline: none;
         }
@@ -141,7 +141,7 @@
         </div>
         <form method="post">
             <label>Zona:
-                <select name="zona" required>
+                <select name="zona" id="zona-select" required>
                     <option value="">Selectează zona</option>
                     <option value="Zona 2">Zona 2</option>
                     <option value="Zona 3">Zona 3</option>
@@ -153,21 +153,65 @@
                     <option value="Zona 9">Zona 9</option>
                 </select>
             </label>
+            <label>Scopul deplasării:
+                <select name="scop" id="scop-select" required>
+                    <option value="">Selectează scopul</option>
+                </select>
+            </label>
+            <label>Data:
+                <input type="date" name="data" value="{{ today }}">
+            </label>
             <label>Km:
                 <input type="number" name="km" required>
             </label>
             <button type="submit">Adaugă</button>
         </form>
+        <script>
+        const clientiPeZona = {
+            'Zona 2': ['Client Z2-1', 'Client Z2-2', 'Client Z2-3'],
+            'Zona 3': ['Client Z3-1', 'Client Z3-2'],
+            'Zona 4': ['Client Z4-1', 'Client Z4-2', 'Client Z4-3', 'Client Z4-4'],
+            'Zona 5': ['Client Z5-1'],
+            'Zona 6': ['Client Z6-1', 'Client Z6-2'],
+            'Zona 7': ['Client Z7-1', 'Client Z7-2', 'Client Z7-3'],
+            'Zona 8': ['Client Z8-1'],
+            'Zona 9': ['Client Z9-1', 'Client Z9-2'],
+        };
+        const scopuriGenerale = [
+            'Proiecte',
+            'Potentiali clienti noi',
+            'Administrativ'
+        ];
+        document.getElementById('zona-select').addEventListener('change', function() {
+            const zona = this.value;
+            const scopSelect = document.getElementById('scop-select');
+            scopSelect.innerHTML = '<option value="">Selectează scopul</option>';
+            if (zona && clientiPeZona[zona]) {
+                scopuriGenerale.forEach(function(scop) {
+                    scopSelect.innerHTML += `<option value="${scop}">${scop}</option>`;
+                });
+                clientiPeZona[zona].forEach(function(client) {
+                    scopSelect.innerHTML += `<option value="${client}">${client}</option>`;
+                });
+            }
+        });
+        </script>
         <table>
             <tr>
+                {% if username == 'Admin' %}<th>Utilizator</th>{% endif %}
                 <th>Zona</th>
+                <th>Scop</th>
                 <th>Kilometri</th>
+                <th>Data</th>
                 <th>Acțiuni</th>
             </tr>
             {% for row in rows %}
             <tr>
+                {% if username == 'Admin' %}<td>{{ row[1] }}</td>{% endif %}
                 <td>{{ row[2] }}</td>
+                <td>{{ row[5] }}</td>
                 <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
                 <td><a href="/edit/{{ row[0] }}"><button class="edit-btn">Editează</button></a></td>
             </tr>
             {% endfor %}
