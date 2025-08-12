@@ -1,12 +1,28 @@
+
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 import pandas as pd
 from flask import send_file
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer
+
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # schimbă cu ceva mai sigur în producție
+
+# Flask-Mail config (imported from config_email.py)
+import config_email
+app.config['MAIL_SERVER'] = config_email.MAIL_SERVER
+app.config['MAIL_PORT'] = config_email.MAIL_PORT
+app.config['MAIL_USE_TLS'] = config_email.MAIL_USE_TLS
+app.config['MAIL_USERNAME'] = config_email.MAIL_USERNAME
+app.config['MAIL_PASSWORD'] = config_email.MAIL_PASSWORD
+app.config['MAIL_DEFAULT_SENDER'] = config_email.MAIL_DEFAULT_SENDER
+
+mail = Mail(app)
+serializer = URLSafeTimedSerializer(app.secret_key)
 
 DB_NAME = 'parcurs.db'
 
@@ -219,6 +235,57 @@ def edit(id):
         if not row:
             return "Nu ai acces la această înregistrare!", 403
         return render_template('edit.html', row=row, is_admin=False)
+
+
+# Forgot password (request reset)
+
+# Forgot password (request reset)
+@app.route('/forgot', methods=['GET', 'POST'])
+def forgot():
+    message = None
+    if request.method == 'POST':
+        email = request.form['email']
+        conn = sqlite3.connect(DB_NAME)
+        c = conn.cursor()
+        c.execute('SELECT username FROM users WHERE username=?', (email,))
+        user = c.fetchone()
+        conn.close()
+        if user:
+            # Generate token
+            token = serializer.dumps(email, salt='reset-password')
+            reset_url = url_for('reset_password', token=token, _external=True)
+            # Send email
+            try:
+                msg = Message('Resetare parolă Foaie Parcurs', recipients=[email])
+                msg.body = f"Salut!\n\nPentru a reseta parola, accesează linkul: {reset_url}\n\nDacă nu ai cerut resetarea, ignoră acest mesaj."
+                mail.send(msg)
+                message = 'Un link de resetare a fost trimis pe email.'
+            except Exception as e:
+                message = f'Eroare la trimiterea emailului: {e}'
+        else:
+            message = 'Acest email nu există în sistem.'
+        return render_template('forgot.html', message=message)
+    return render_template('forgot.html')
+
+# Password reset form
+@app.route('/reset/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    message = None
+    try:
+        email = serializer.loads(token, salt='reset-password', max_age=3600)
+    except Exception:
+        return 'Link expirat sau invalid!', 400
+    if request.method == 'POST':
+        password = request.form['password']
+        hash_pw = generate_password_hash(password)
+        conn = sqlite3.connect(DB_NAME)
+        c = conn.cursor()
+        c.execute('UPDATE users SET password=? WHERE username=?', (hash_pw, email))
+        conn.commit()
+        conn.close()
+        message = 'Parola a fost resetată! Acum te poți loga.'
+        return render_template('reset.html', message=message)
+    return render_template('reset.html', email=email)
 
 if __name__ == '__main__':
     app.run(debug=True)
