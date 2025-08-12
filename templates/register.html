@@ -11,12 +11,16 @@
       min-height: 100vh;
     }
     .container {
-      max-width: 400px;
-      margin: 40px auto;
+      max-width: 480px;
+      min-width: 320px;
+      margin: 60px auto 0 auto;
       background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(60,72,88,0.12);
-      padding: 32px 28px 24px 28px;
+      border-radius: 28px;
+      box-shadow: 0 8px 32px rgba(60,72,88,0.18);
+      padding: 48px 38px 38px 38px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     h1 {
       text-align: center;
@@ -92,13 +96,15 @@
       <div class="msg">{{ messages[0] }}</div>
       {% endif %}
     {% endwith %}
-    <form method="post">
-      <label>Username:
-        <input type="text" name="username" required>
-      </label>
-      <label>Parolă:
-        <input type="password" name="password" required>
-      </label>
+    <form method="post" style="display:flex;flex-direction:column;align-items:center;gap:18px;">
+      <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
+  <label for="register-username" style="font-size:16px;color:#374151;font-weight:500;text-align:left;margin-bottom:6px;width:80%;max-width:260px;">Username</label>
+  <input id="register-username" type="text" name="username" required style="width:100%;max-width:420px;margin-bottom:0;">
+      </div>
+      <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
+  <label for="register-password" style="font-size:16px;color:#374151;font-weight:500;text-align:left;margin-bottom:6px;width:80%;max-width:260px;">Parolă</label>
+  <input id="register-password" type="password" name="password" required style="width:100%;max-width:420px;margin-bottom:0;">
+      </div>
       <button type="submit">Creează cont</button>
     </form>
     <a href="/login">Ai deja cont? Login</a>
