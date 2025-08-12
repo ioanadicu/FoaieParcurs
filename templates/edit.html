@@ -29,11 +29,20 @@
             gap: 16px;
             margin-bottom: 18px;
         }
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 0;
+            margin-bottom: 0;
+        }
         label {
             font-size: 15px;
             color: #374151;
+            width: 100%;
+            margin-bottom: 0;
         }
-        input[type="text"], input[type="number"], select {
+        input[type="text"], input[type="number"], select, input[type="date"] {
             padding: 8px 12px;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
@@ -41,8 +50,11 @@
             margin-top: 4px;
             background: #f1f5f9;
             transition: border 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 0;
         }
-        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+        input[type="text"]:focus, input[type="number"]:focus, select:focus, input[type="date"]:focus {
             border: 1.5px solid #6366f1;
             outline: none;
         }
@@ -57,9 +69,38 @@
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(99,102,241,0.08);
             transition: background 0.2s;
+            min-width: 140px;
+            display: inline-block;
+            margin-top: 16px;
         }
         button[type="submit"]:hover {
             background: linear-gradient(90deg, #4338ca 0%, #2563eb 100%);
+        }
+        .back-btn-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 8px;
+        }
+        .back-btn {
+            display: inline-block;
+            min-width: unset;
+            font-size: 16px;
+            padding: 0;
+            border-radius: 0;
+            background: none;
+            color: #374151;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: none;
+            transition: color 0.2s;
+            border: none;
+            text-decoration: none;
+            margin-bottom: 8px;
+        }
+        .back-btn:hover {
+            color: #6366f1;
+            background: none;
         }
         a {
             color: #6366f1;
@@ -73,29 +114,59 @@
         a:hover {
             color: #2563eb;
         }
-        @media (max-width: 600px) {
+        @media (max-width: 1000px) {
             .container {
                 max-width: 100vw;
-                padding: 8px 2vw;
+                padding: 36px 4vw;
                 border-radius: 0;
                 box-shadow: none;
-            }
-            h1 {
-                font-size: 1.3em;
+                margin-left: auto;
+                margin-right: auto;
             }
             form {
-                gap: 10px;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                gap: 16px;
+            }
+            .form-row {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                gap: 0;
+                margin-bottom: 3vw;
             }
             label {
-                font-size: 14px;
+                width: 100%;
+                font-size: 4vw;
+                margin-bottom: 1vw;
             }
             input[type="text"], input[type="number"], select, input[type="date"] {
-                font-size: 14px;
-                padding: 8px 8px;
+                width: 100%;
+                box-sizing: border-box;
+                margin: 0 0 1vw 0;
+                font-size: 4vw;
+                padding: 2vw 2vw;
+                border-radius: 1vw;
             }
             button[type="submit"] {
-                font-size: 15px;
-                padding: 8px 10px;
+                font-size: 4vw;
+                padding: 3vw 3vw;
+                min-width: 90vw;
+                border-radius: 4vw;
+                margin-bottom: 8vw;
+            }
+            h1 {
+                font-size: 6vw;
+                margin-bottom: 8vw;
+            }
+            .back-btn {
+                font-size: 4vw;
+                color: #374151;
+                margin-bottom: 8vw;
+                padding: 0;
+                background: none;
+                border-radius: 0;
             }
         }
     </style>
@@ -106,10 +177,13 @@
         <h1>Editează Parcurs</h1>
         <form method="post">
             {% if is_admin %}
+            <div class="form-row">
             <label>Nume utilizator:
                 <input type="text" name="username" value="{{ row[1] }}" required>
             </label>
+            </div>
             {% endif %}
+            <div class="form-row">
             <label>Zona:
                 <select name="zona" id="zona-select" required>
                     <option value="Zona 2" {% if row[2] == 'Zona 2' %}selected{% endif %}>Zona 2</option>
@@ -122,18 +196,30 @@
                     <option value="Zona 9" {% if row[2] == 'Zona 9' %}selected{% endif %}>Zona 9</option>
                 </select>
             </label>
+            </div>
+            <div class="form-row">
             <label>Scopul deplasării:
                 <select name="scop" id="scop-select" required>
                     <option value="">Selectează scopul</option>
                 </select>
             </label>
+            </div>
+            <div class="form-row">
             <label>Data:
                 <input type="date" name="data" value="{{ row[5] }}">
             </label>
+            </div>
+            <div class="form-row">
             <label>Km:
                 <input type="number" name="km" value="{{ row[4] }}" required>
             </label>
-            <button type="submit">Salvează</button>
+            </div>
+            <div style="width: 100%; display: flex; justify-content: center; margin-top: 16px;">
+                <button type="submit">Salvează</button>
+            </div>
+            <div class="back-btn-wrapper">
+                <a href="/" class="back-btn">&larr; Înapoi</a>
+            </div>
         </form>
         <script>
         let clientiPeZona = {};
@@ -174,7 +260,6 @@
         document.getElementById('zona-select').addEventListener('change', updateScopuri);
         window.onload = updateScopuri;
         </script>
-        <a href="/">&larr; Înapoi</a>
     </div>
 </body>
 </html>
