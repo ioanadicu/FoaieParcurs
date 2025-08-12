@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
 import os
@@ -9,9 +12,8 @@ from itsdangerous import URLSafeTimedSerializer
 
 
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'  # schimbă cu ceva mai sigur în producție
+app.secret_key = os.environ.get('SECRET_KEY') or os.urandom(32)
 
-# Flask-Mail config (imported from config_email.py)
 import config_email
 app.config['MAIL_SERVER'] = config_email.MAIL_SERVER
 app.config['MAIL_PORT'] = config_email.MAIL_PORT
@@ -57,7 +59,7 @@ def init_db():
     if 'scop' not in columns:
         c.execute('ALTER TABLE parcurs ADD COLUMN scop TEXT')
         conn.commit()
-    # Creează contul Admin dacă nu există
+
     c.execute('SELECT * FROM users WHERE username=?', ('Admin',))
     if not c.fetchone():
         from werkzeug.security import generate_password_hash
@@ -65,10 +67,6 @@ def init_db():
         c.execute('INSERT INTO users (username, password) VALUES (?, ?)', ('Admin', hash_pw))
         conn.commit()
     conn.close()
-
-# Dacă există deja tabelul vechi, îl redenumim și migrăm datele
-
-# Migrare: recreează tabelul fără coloana nume dacă există
 
 def migrate_db():
     conn = sqlite3.connect(DB_NAME)
