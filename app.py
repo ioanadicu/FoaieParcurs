@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
 import os
@@ -169,10 +168,10 @@ def index():
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
     if username == 'Admin':
-        c.execute('SELECT * FROM parcurs')
+        c.execute('SELECT * FROM parcurs ORDER BY data DESC, id DESC')
         export_btn = True
     else:
-        c.execute('SELECT * FROM parcurs WHERE username=?', (username,))
+        c.execute('SELECT * FROM parcurs WHERE username=? ORDER BY data DESC, id DESC', (username,))
         export_btn = False
     rows = c.fetchall()
     conn.close()

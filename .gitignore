@@ -10,6 +10,7 @@ instance/
 .env.*
 
 config_email.py
+foaie_parcurs.xlsx
 *.env
 *.log
 
