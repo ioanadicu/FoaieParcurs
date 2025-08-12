@@ -3,111 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <title>Înregistrare Foaie Parcurs</title>
-  <style>
+    <style>
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(120deg, #f8fafc 0%, #e0e7ff 100%);
-      margin: 0;
-      min-height: 100vh;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: linear-gradient(120deg, #f8fafc 0%, #e0e7ff 100%);
+        margin: 0;
+        min-height: 100vh;
+        display: block;
     }
     .container {
-      max-width: 480px;
-      min-width: 320px;
-      margin: 60px auto 0 auto;
-      background: #fff;
-      border-radius: 28px;
-      box-shadow: 0 8px 32px rgba(60,72,88,0.18);
-      padding: 48px 38px 38px 38px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+        max-width: 480px;
+        min-width: 320px;
+        margin: 60px auto 0 auto;
+        background: #fff;
+        border-radius: 28px;
+        box-shadow: 0 8px 32px rgba(60,72,88,0.18);
+        padding: 48px 38px 38px 38px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     h1 {
-      text-align: center;
-      color: #3b3b3b;
-      margin-bottom: 18px;
+        text-align: center;
+        color: #3b3b3b;
+        margin-bottom: 38px;
     }
     form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        margin-bottom: 18px;
     }
-    label {
-      font-size: 15px;
-      color: #374151;
+    .container form > div {
+        margin-bottom: 0;
+    }
+    .login-label {
+        font-size: 22px;
+        color: #374151;
+        font-weight: 500;
+        text-align: left;
+        margin-bottom: 6px;
+        width: 80%;
+        max-width: 260px;
+    }
+    .center-input {
+        display: block;
+        width: 100%;
+        min-width: 320px;
+        max-width: 420px;
+        margin: 0;
     }
     input[type="text"], input[type="password"] {
-      padding: 8px 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 15px;
-      margin-top: 4px;
-      background: #f1f5f9;
-      transition: border 0.2s;
+        padding: 8px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 15px;
+        margin-top: 4px;
+        background: #f1f5f9;
+        transition: border 0.2s;
     }
     input[type="text"]:focus, input[type="password"]:focus {
-      border: 1.5px solid #6366f1;
-      outline: none;
+        border: 1.5px solid #6366f1;
+        outline: none;
     }
     button[type="submit"] {
-      background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 22px;
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(99,102,241,0.08);
-      transition: background 0.2s;
+        background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 20px 0;
+        font-size: 1em;
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+        transition: background 0.2s;
+        margin-bottom: 20px;
+        min-width: 25vw;
     }
     button[type="submit"]:hover {
-      background: linear-gradient(90deg, #4338ca 0%, #2563eb 100%);
+        background: linear-gradient(90deg, #4338ca 0%, #2563eb 100%);
     }
     .msg {
-      color: #ef4444;
-      text-align: center;
-      margin-bottom: 10px;
+        color: #ef4444;
+        text-align: center;
+        margin-bottom: 10px;
     }
-    a {
-      color: #6366f1;
-      text-decoration: none;
-      font-weight: 500;
-      display: block;
-      text-align: center;
-      margin-top: 10px;
-      transition: color 0.2s;
+    .login-link {
+        font-size: 17px;
+        color: #6366f1;
+        text-decoration: none;
+        font-weight: 500;
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        transition: color 0.2s;
     }
-    a:hover {
-      color: #2563eb;
+    .login-link.second-link {
+        margin-top: 30px !important;
+        margin-bottom: 30px;
     }
-    @media (max-width: 600px) {
-      .container { padding: 12px 4px; }
+    .login-link + .login-link {
+        margin-top: 16px;
     }
-  </style>
+    @media (max-width: 1000px) {
+        .container {
+            padding: 30px 4vw;
+            min-width: 80vw;
+            max-width: 80vw;
+            border-radius: 28px;
+            margin-top: 36px;
+        }
+        h1 {
+            font-size: 4em;
+            margin-bottom: 64px;
+        }
+        .login-label {
+            font-size: 50px !important;
+            max-width: 98vw;
+            display: block;
+        }
+        form {
+            gap: 0;
+        }
+        .container form > div {
+            margin-bottom: 0 !important;
+        }
+        .container form > div:first-child {
+            margin-bottom: 70px !important;
+        }
+        .container form > div:last-child {
+            margin-bottom: 96px !important;
+        }
+        input[type="text"], input[type="password"] {
+            font-size: 2.5em;
+            padding: 30px 30px;
+            max-width: 65vw;
+            height: 20px;
+        }
+        button[type="submit"] {
+            font-size: 2.5em;
+            padding: 24px 50px;
+            min-width: 60vw;
+            border-radius: 28px;
+            margin-bottom: 0;
+            margin-top: 96px;
+        }
+        .login-link {
+            font-size: 40px !important;
+            margin-top: 48px !important;
+            margin-bottom: 30px;
+        }
+        .center-input {
+            min-width: 65vw;
+            max-width: 65vw;
+        }
+    }
+    </style>
 </head>
 <body>
-  {% include 'topbar.html' %}
-  <div class="container">
-    <h1>Înregistrare</h1>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <div class="msg">{{ messages[0] }}</div>
-      {% endif %}
-    {% endwith %}
-    <form method="post" style="display:flex;flex-direction:column;align-items:center;gap:18px;">
-      <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
-  <label for="register-username" style="font-size:16px;color:#374151;font-weight:500;text-align:left;margin-bottom:6px;width:80%;max-width:260px;">Username</label>
-  <input id="register-username" type="text" name="username" required style="width:100%;max-width:420px;margin-bottom:0;">
-      </div>
-      <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
-  <label for="register-password" style="font-size:16px;color:#374151;font-weight:500;text-align:left;margin-bottom:6px;width:80%;max-width:260px;">Parolă</label>
-  <input id="register-password" type="password" name="password" required style="width:100%;max-width:420px;margin-bottom:0;">
-      </div>
-      <button type="submit">Creează cont</button>
-    </form>
-    <a href="/login">Ai deja cont? Login</a>
-  </div>
+    {% include 'topbar.html' %}
+    <div class="container">
+        <h1>Înregistrare</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="msg">{{ messages[0] }}</div>
+            {% endif %}
+        {% endwith %}
+        <form method="post" style="display:flex;flex-direction:column;align-items:center;">
+            <div style="width:100%;display:flex;flex-direction:column;align-items:flex-start;margin-bottom:0;">
+                <label for="register-username" class="login-label" style="text-align:left;">Username</label>
+                <div style="width:100%;display:flex;justify-content:center;">
+                    <input id="register-username" type="text" name="username" required class="center-input">
+                </div>
+            </div>
+            <div style="width:100%;display:flex;flex-direction:column;align-items:flex-start;margin-bottom:0;">
+                <label for="register-password" class="login-label" style="text-align:left;">Parolă</label>
+                <div style="width:100%;display:flex;justify-content:center;">
+                    <input id="register-password" type="password" name="password" required class="center-input">
+                </div>
+            </div>
+            <button type="submit">Creează cont</button>
+        </form>
+        <a href="/login" class="login-link">Ai deja cont? Login</a>
+    </div>
 </body>
 </html>

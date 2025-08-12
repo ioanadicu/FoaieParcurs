@@ -21,7 +21,8 @@
         h1 {
             text-align: center;
             color: #3b3b3b;
-            margin-bottom: 18px;
+            margin-bottom: 38px;
+            margin-top: 38px;
         }
         .userbar {
             display: flex;
@@ -81,6 +82,9 @@
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(99,102,241,0.08);
             transition: background 0.2s;
+            min-width: 220px;
+            padding-left: 40px;
+            padding-right: 40px;
         }
         button[type="submit"]:hover {
             background: linear-gradient(90deg, #4338ca 0%, #2563eb 100%);
@@ -128,13 +132,13 @@
         .edit-btn:hover {
             background: linear-gradient(90deg, #2563eb 0%, #6366f1 100%);
         }
-        @media (max-width: 600px) {
+    @media (max-width: 1000px) {
             body {
                 text-align: initial;
             }
             .container {
                 max-width: 100vw;
-                padding: 8px 2vw;
+                padding: 36px 4vw;
                 border-radius: 0;
                 box-shadow: none;
                 margin-left: auto;
@@ -144,15 +148,45 @@
                 display: flex;
                 flex-direction: column;
                 width: 100%;
+                gap: 16px;
+            }
+            .form-row {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
                 gap: 0;
+                margin-bottom: 3vw;
             }
             label {
                 width: 100%;
+                font-size: 4vw;
+                margin-bottom: 1vw;
             }
             input[type="text"], input[type="number"], input[type="date"], select {
                 width: 100%;
                 box-sizing: border-box;
-                margin: 0;
+                margin: 0 0 1vw 0;
+                font-size: 4vw;
+                padding: 2vw 2vw;
+                border-radius: 1vw;
+            }
+            button[type="submit"] {
+                font-size: 4vw;
+                padding: 3vw 3vw;
+                min-width: 90vw;
+                border-radius: 4vw;
+                margin-bottom: 8vw;
+            }
+            .excel-btn {
+                font-size: 4vw !important;
+                padding: 3vw 0 !important;
+                min-width: 50vw !important;
+                border-radius: 6vw !important;
+            }
+            .excel-btn-wrapper {
+                display: flex;
+                justify-content: flex-start;
+                width: 100%;
             }
             table {
                 width: 100%;
@@ -160,33 +194,41 @@
                 margin-right: auto;
             }
             h1 {
-                font-size: 1.2em;
+                font-size: 6vw;
+                margin-bottom: 8vw;
             }
             .userbar {
                 flex-direction: column;
                 gap: 8px;
                 font-size: 15px;
             }
-            form {
-                flex-direction: column;
-                gap: 10px;
-            }
-            label {
-                font-size: 14px;
-            }
-            input[type="text"], input[type="number"], input[type="date"], select {
-                font-size: 14px;
-                padding: 8px 8px;
-            }
-            button[type="submit"] {
-                font-size: 15px;
-                padding: 8px 10px;
-            }
             table {
-                font-size: 13px;
+                font-size: 4vw;
+                margin-left: auto;
+                margin-right: auto;
+                table-layout: fixed;
             }
             th, td {
-                padding: 7px 2px;
+                padding: 10px 2px;
+                word-break: break-word;
+            }
+            th.scop-col, td.scop-col {
+                max-width: 18vw;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            th {
+                font-size: 4vw;
+            }
+            .edit-btn {
+                font-size: 4vw;
+                padding: 1vw 1vw;
+                border-radius: 3vw;
+            }
+            .form-section-label {
+                font-size: 4vw !important;
+                font-weight: 600 !important;
             }
         }
     </style>
@@ -194,73 +236,67 @@
 <body>
     {% include 'topbar.html' %}
     <div class="container">
-        <h1 style="margin-top:0;">Foaie Parcurs</h1>
+        <h1 style="margin-top:0;">
+            {% if username == 'Admin' %}
+                Administrare Deplasări
+            {% else %}
+                Foaie Parcurs
+            {% endif %}
+        </h1>
         {% if export_btn %}
+        <div class="excel-btn-wrapper">
         <form method="get" action="/export" style="margin-bottom: 16px;">
-            <button type="submit" style="background:linear-gradient(90deg,#6366f1 0%,#60a5fa 100%);color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:16px;font-weight:500;cursor:pointer;box-shadow:0 2px 8px rgba(99,102,241,0.08);transition:background 0.2s;margin-bottom:8px;">Generare Excel</button>
+            <button type="submit" class="excel-btn" style="background:linear-gradient(90deg,#6366f1 0%,#60a5fa 100%);color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:16px;font-weight:500;cursor:pointer;box-shadow:0 2px 8px rgba(99,102,241,0.08);transition:background 0.2s;margin-bottom:8px;">Generare Excel Istoric</button>
         </form>
+        </div>
         {% endif %}
+        {% if username != 'Admin' %}
         <form method="post">
-            <label>Zona:
-                <select name="zona" id="zona-select" required>
-                    <option value="">Selectează zona</option>
-                    <option value="Zona 2">Zona 2</option>
-                    <option value="Zona 3">Zona 3</option>
-                    <option value="Zona 4">Zona 4</option>
-                    <option value="Zona 5">Zona 5</option>
-                    <option value="Zona 6">Zona 6</option>
-                    <option value="Zona 7">Zona 7</option>
-                    <option value="Zona 8">Zona 8</option>
-                    <option value="Zona 9">Zona 9</option>
-                </select>
-            </label>
-            <label>Scopul deplasării:
-                <select name="scop" id="scop-select" required>
-                    <option value="">Selectează scopul</option>
-                </select>
-            </label>
-            <label>Data:
-                <input type="date" name="data" value="{{ today }}">
-            </label>
-            <label>Km:
-                <input type="number" name="km" required>
-            </label>
+            <div class="form-section-label" style="width:100%;text-align:left;margin-bottom:24px;font-size:20px;color:#6366f1;font-weight:700;display:block;">Introduceți o deplasare nouă:</div>
+            <div class="form-row">
+                <label>Zona:
+                    <select name="zona" id="zona-select" required>
+                        <option value="">Selectează zona</option>
+                        <option value="Zona 2">Zona 2</option>
+                        <option value="Zona 3">Zona 3</option>
+                        <option value="Zona 4">Zona 4</option>
+                        <option value="Zona 5">Zona 5</option>
+                        <option value="Zona 6">Zona 6</option>
+                        <option value="Zona 7">Zona 7</option>
+                        <option value="Zona 8">Zona 8</option>
+                        <option value="Zona 9">Zona 9</option>
+                    </select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Scopul deplasării:
+                    <select name="scop" id="scop-select" required>
+                        <option value="">Selectează scopul</option>
+                    </select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Data:
+                    <input type="date" name="data" value="{{ today }}">
+                </label>
+            </div>
+            <div class="form-row">
+                <label>Km:
+                    <input type="number" name="km" required>
+                </label>
+            </div>
             <div style="width: 100%; display: flex; justify-content: center; margin-top: 16px;">
                 <button type="submit" style="min-width: 140px;">Adaugă</button>
             </div>
         </form>
-        <script>
-        let clientiPeZona = {};
-        fetch('/static/clienti_zona.json')
-            .then(response => response.json())
-            .then(data => {
-                clientiPeZona = data;
-            });
-        const scopuriGenerale = [
-            'Proiecte',
-            'Potentiali clienti noi',
-            'Administrativ'
-        ];
-        document.getElementById('zona-select').addEventListener('change', function() {
-            const zona = this.value;
-            const scopSelect = document.getElementById('scop-select');
-            scopSelect.innerHTML = '<option value="">Selectează scopul</option>';
-            if (zona && clientiPeZona[zona]) {
-                scopuriGenerale.forEach(function(scop) {
-                    scopSelect.innerHTML += `<option value="${scop}">${scop}</option>`;
-                });
-                clientiPeZona[zona].forEach(function(client) {
-                    scopSelect.innerHTML += `<option value="${client}">${client}</option>`;
-                });
-            }
-        });
-        </script>
+        {% endif %}
+        <div class="form-section-label" style="margin-top:32px;margin-bottom:12px;font-size:20px;color:#6366f1;font-weight:700;">Istoric introduceri:</div>
         <table>
             <tr>
-                {% if username == 'Admin' %}<th>Utilizator</th>{% endif %}
+                {% if username == 'Admin' %}<th>User</th>{% endif %}
                 <th>Zona</th>
-                <th>Scop</th>
-                <th>Kilometri</th>
+                <th class="scop-col">Scop</th>
+                <th>Km</th>
                 <th>Data</th>
                 <th>Acțiuni</th>
             </tr>
@@ -268,7 +304,7 @@
             <tr>
                 {% if username == 'Admin' %}<td>{{ row[1] }}</td>{% endif %}
                 <td>{{ row[2] }}</td> <!-- zona -->
-                <td>{{ row[3] }}</td> <!-- scop -->
+                <td class="scop-col">{{ row[3] }}</td> <!-- scop -->
                 <td>{{ row[4] }}</td> <!-- km -->
                 <td>{{ row[5] }}</td> <!-- data -->
                 <td><a href="/edit/{{ row[0] }}"><button class="edit-btn">Editează</button></a></td>
@@ -276,5 +312,31 @@
             {% endfor %}
         </table>
     </div>
+    <script>
+    let clientiPeZona = {};
+    fetch('/static/clienti_zona.json')
+        .then(response => response.json())
+        .then(data => {
+            clientiPeZona = data;
+        });
+    const scopuriGenerale = [
+        'Proiecte',
+        'Potentiali clienti noi',
+        'Administrativ'
+    ];
+    document.getElementById('zona-select').addEventListener('change', function() {
+        const zona = this.value;
+        const scopSelect = document.getElementById('scop-select');
+        scopSelect.innerHTML = '<option value="">Selectează scopul</option>';
+        if (zona && clientiPeZona[zona]) {
+            scopuriGenerale.forEach(function(scop) {
+                scopSelect.innerHTML += `<option value="${scop}">${scop}</option>`;
+            });
+            clientiPeZona[zona].forEach(function(client) {
+                scopSelect.innerHTML += `<option value="${client}">${client}</option>`;
+            });
+        }
+    });
+    </script>
 </body>
 </html>

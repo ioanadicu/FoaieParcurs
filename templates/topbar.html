@@ -29,28 +29,50 @@ body {
 .topbar * {
     box-sizing: border-box;
 }
-@media (max-width: 600px) {
+@media (max-width: 1000px) {
     .topbar {
         width: 100vw;
-        padding-left: 0;
-        padding-right: 0;
+        padding-left: 2vw;
+        padding-right: 2vw;
         border-radius: 0 0 12px 12px;
+        min-height: 120px;
+        font-size: 1.2em;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+    .topbar-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-top: 12px;
+        padding-left: 2vw;
+        padding-right: 2vw;
+    }
+    .topbar span, .topbar a {
+        font-size: 1.7em !important;
+        padding: 8px 18px !important;
+    }
+    .topbar img {
+        height: 100px !important;
     }
 }
 </style>
-<div class="topbar" style="display: flex; align-items: center; justify-content: space-between;">
+<div class="topbar">
     <div style="display: flex; align-items: center; min-width: 40px;">
         <a href="/" title="Acasă" style="display: flex; align-items: center; text-decoration: none; gap: 12px;">
             <img src="/static/images/bro_logo.jpg" alt="Baumit Logo" style="height:36px;border-radius:10px;box-shadow:0 2px 8px rgba(60,72,88,0.18);">
             <span style="font-weight: 700; color: #6366f1; font-size: 22px; letter-spacing: 1px; text-shadow: 0 2px 8px rgba(99,102,241,0.10);">Foaie Parcurs</span>
         </a>
     </div>
-    <div style="display: flex; align-items: center; gap: 28px; min-width: 120px; justify-content: flex-end; margin-right:28px;">
+    <div class="topbar-row">
         {% if username %}
-        <span style="color:#6366f1;font-weight:500;font-size:17px;background:rgba(99,102,241,0.08);padding:6px 16px;border-radius:8px;box-shadow:0 1px 4px rgba(99,102,241,0.08);">{{ username }}</span>
+        <span style="color:#6366f1;font-weight:500;font-size:17px;background:rgba(99,102,241,0.08);padding:6px 16px;border-radius:8px;box-shadow:0 1px 4px rgba(99,102,241,0.08);text-align:left;">{{ username }}</span>
         {% endif %}
         {% if username %}
-        <a href="/logout" title="Logout" style="color:#ef4444;font-size:18px;font-weight:500;text-decoration:none;background:rgba(239,68,68,0.08);padding:6px 16px;border-radius:8px;box-shadow:0 1px 4px rgba(239,68,68,0.08);transition:background 0.2s;">Logout</a>
+        <a href="/logout" title="Logout" style="color:#ef4444;font-size:18px;font-weight:500;text-decoration:none;background:rgba(239,68,68,0.08);padding:6px 16px;border-radius:8px;box-shadow:0 1px 4px rgba(239,68,68,0.08);transition:background 0.2s;text-align:right;">Logout</a>
         {% endif %}
     </div>
 </div>
