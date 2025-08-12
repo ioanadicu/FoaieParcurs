@@ -14,13 +14,12 @@ from itsdangerous import URLSafeTimedSerializer
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY') or os.urandom(32)
 
-import config_email
-app.config['MAIL_SERVER'] = config_email.MAIL_SERVER
-app.config['MAIL_PORT'] = config_email.MAIL_PORT
-app.config['MAIL_USE_TLS'] = config_email.MAIL_USE_TLS
-app.config['MAIL_USERNAME'] = config_email.MAIL_USERNAME
-app.config['MAIL_PASSWORD'] = config_email.MAIL_PASSWORD
-app.config['MAIL_DEFAULT_SENDER'] = config_email.MAIL_DEFAULT_SENDER
+app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
+app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', 587))
+app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS', 'True').lower() in ['true', '1', 'yes']
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER')
 
 mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.secret_key)
@@ -62,8 +61,8 @@ def init_db():
 
     c.execute('SELECT * FROM users WHERE username=?', ('Admin',))
     if not c.fetchone():
-        from werkzeug.security import generate_password_hash
-        hash_pw = generate_password_hash('Baumit123')
+        admin_pw = os.environ.get('ADMIN_PASSWORD') or 'schimba_parola_admin'
+        hash_pw = generate_password_hash(admin_pw)
         c.execute('INSERT INTO users (username, password) VALUES (?, ?)', ('Admin', hash_pw))
         conn.commit()
     conn.close()
