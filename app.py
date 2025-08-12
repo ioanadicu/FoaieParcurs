@@ -234,8 +234,6 @@ def edit(id):
 
 
 # Forgot password (request reset)
-
-# Forgot password (request reset)
 @app.route('/forgot', methods=['GET', 'POST'])
 def forgot():
     message = None
@@ -284,4 +282,4 @@ def reset_password(token):
     return render_template('reset.html', email=email)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=False, host='0.0.0.0')
