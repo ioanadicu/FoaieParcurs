@@ -4,3 +4,4 @@ pandas
 openpyxl
 flask-mail
 itsdangerous
+python-dotenv
